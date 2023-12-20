@@ -25,17 +25,17 @@ class Personaje:
         self.vida = 0
         print(self.nombre, "Se fue con diocito")
     
-    def daño(self, sebas_low_elo):
-        return self.fuerza - sebas_low_elo.defensa
+    def daño(self, oponente):
+        return self.fuerza - oponente.defensa
 
-    def atacar(self,sebas_low_elo):
-        daño = self.daño(sebas_low_elo)
-        sebas_low_elo.vida = sebas_low_elo.vida - daño
-        print(self.nombre, "Ha hecho", daño, "Puntos de daño a", sebas_low_elo.nombre)
-        if sebas_low_elo.vivo():
-            print("la vida de", sebas_low_elo.nombre, "es", sebas_low_elo.vida)
+    def atacar(self,oponente):
+        daño = self.daño(oponente)
+        oponente.vida = oponente.vida - daño
+        print(self.nombre, "Ha hecho", daño, "Puntos de daño a", oponente.nombre)
+        if oponente.vivo():
+            print("la vida de", oponente.nombre, "es", oponente.vida)
         else:
-            sebas_low_elo.morir()
+            oponente.morir()
 
 mi_personaje = Personaje("Akari", 1000,1,5,100)
 sebas_low_elo = Personaje("Sebas",30,1,30,100)
