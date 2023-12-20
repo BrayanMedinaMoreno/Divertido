@@ -23,18 +23,28 @@ class Personaje:
     
     def morir (self):
         self.vida = 0
-        print(self.nombre, "Ha casa malo")
+        print(self.nombre, "Se fue con diocito")
     
     def daño(self, sebas_low_elo):
         return self.fuerza - sebas_low_elo.defensa
 
+    def atacar(self,sebas_low_elo):
+        daño = self.daño(sebas_low_elo)
+        sebas_low_elo.vida = sebas_low_elo.vida - daño
+        print(self.nombre, "Ha hecho", daño, "Puntos de daño a", sebas_low_elo.nombre)
+        if sebas_low_elo.vivo():
+            print("la vida de", sebas_low_elo.nombre, "es", sebas_low_elo.vida)
+        else:
+            sebas_low_elo.morir()
 
-mi_personaje = Personaje("Akari", 10,1,5,100)
+mi_personaje = Personaje("Akari", 1000,1,5,100)
 sebas_low_elo = Personaje("Sebas",30,1,30,100)
-print(mi_personaje.daño(sebas_low_elo))
+mi_personaje.atacar(sebas_low_elo)
+sebas_low_elo.atributos()
 
-
-mi_personaje.atributos()
+#print(mi_personaje.daño(sebas_low_elo))
+#sebas_low_elo.atributos()
+#mi_personaje.atributos()
 #mi_personaje.morir()
 #mi_personaje.atributos()
 #mi_personaje.subir_de_nivel(10,2,5)
