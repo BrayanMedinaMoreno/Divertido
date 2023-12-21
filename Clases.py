@@ -1,14 +1,14 @@
 import random
 
 class Personaje:
-    def __init__(self, nombre, fuerza, fe, defensa, vida):
+    def __init__(self, nombre, fuerza, fe, defensa, vida): #atri
         self.nombre = nombre
         self.fuerza = fuerza 
         self.fe = fe
         self.defensa = defensa
         self.vida = vida
     
-    def atributos(self):
+    def atributos(self): #metodos
         print(self.nombre, ":", sep="")
         print("-Fuerza :", self.fuerza)
         print("-fe :", self.fe)
