@@ -25,17 +25,22 @@ class Personaje:
     
     def morir (self):
         self.vida = 0
-        print(self.nombre, "Se fue con diocito")
+        print(">>> ",self.nombre, " Se fue con diocito")
     
     def daño(self, oponente):
-        return self.fuerza - oponente.defensa
+        if oponente.defensa > self.fuerza:
+            print(">>> No hiciste daño")
+            return 0  # Devuelve 0 para indicar que no se hizo daño
+        elif oponente.defensa < self.fuerza:
+            return self.fuerza - oponente.defensa
+
 
     def atacar(self,oponente):
         daño = self.daño(oponente)
         oponente.vida = oponente.vida - daño
-        print(self.nombre, "Ha hecho", daño, "Puntos de daño a", oponente.nombre)
+        print(">>>", self.nombre, " Ataco y ha hecho ", daño, " Puntos de daño a ", oponente.nombre)
         if oponente.vivo():
-            print("la vida de", oponente.nombre, "es", oponente.vida)
+            print(">>> la vida de", oponente.nombre, "es", oponente.vida)
         else:
             oponente.morir()
 
@@ -44,7 +49,8 @@ class Admin(Personaje):
     def __init__(self, nombre, fuerza, fe, defensa, vida, arma_de_fuego):
         super().__init__(nombre, fuerza, fe, defensa, vida)
         self.arma_de_fuego = arma_de_fuego
-
+        self.arma_de_fuego = random.randint(10,30)*2
+    """
     def cambiar_arma(self):
         opcion = int(input("Elije un arma: (1) Espada 8 de daño (2) pistolas duales ? de daño"))
         if opcion == 1:
@@ -53,28 +59,48 @@ class Admin(Personaje):
             self.arma_de_fuego = random.randint(10,30)
         else:
             print("Numero incorrecto")
-    
+    """
+
     def atributos(self):
         super().atributos()
         print("-Arma", self.arma_de_fuego)
     pass
 
+    """                    
     def daño(self,oponente):
-        return self.fuerza + self.arma_de_fuego - oponente.defensa
+        ataque_total = self.daño + self.arma_de_fuego
+        if  ataque_total < oponente.defensa:
+            print(">>> No hiciste daño")
+            return 0  # Devuelve 0 para indicar que no se hizo daño    
+        elif ataque_total > oponente.defensa:
+            return ataque_total - oponente.defensa
+    """
+    def daño(self, oponente):
+        ataque_total = self.calcular_ataque_total(oponente)
+        if ataque_total < oponente.defensa:
+            print(">>> No hiciste daño")
+            return 0  # Devuelve 0 para indicar que no se hizo daño
+        elif ataque_total > oponente.defensa:
+            return ataque_total - oponente.defensa
+
+    def calcular_ataque_total(self, oponente):
+        return self.fuerza + self.arma_de_fuego
 
 
-Akari = Admin("Akari",8,0,10,100,0)
-
-Akari.atributos()
 
 def combate(player_1,player_2):
-    turno = 0
+    turno = 1
     while player_1.vivo() and player_2.vivo():
-        print("\nTurno", turno)
+        print("\n>>> Turno", turno)
+
         print(">>> acción de ", player_1.nombre, ":", sep="")
         player_1.atacar(player_2)
-        print(">>> Acción de", player_2.nombre, ":", sep="")
+        
+        #print(player_1.atributos())
+
+        print(">>> Acción de ", player_2.nombre, ":", sep="")
         player_2.atacar(player_1)
+
         turno = turno + 1
     if player_1.vivo():
         print("\nHa ganado", player_1.nombre)
@@ -82,6 +108,26 @@ def combate(player_1,player_2):
         print("\nHa ganado", player_2.nombre)
     else:
         print("\nEmpate")
+
+
+Akari = Admin("Akari",8,0,10,100,0)
+sebas_low_elo = Personaje("Sebas",30,1,30,100)
+
+combate(Akari,sebas_low_elo)
+
+"""
+print("\nEstadisticas iniciales")
+sebas_low_elo.atributos()
+print("\nAtacando..")
+Akari.atacar(sebas_low_elo)
+print("\nEstadisticas finales")
+sebas_low_elo.atributos()
+
+
+Moises = Personaje ("MoisesPH",30,100,30,100)
+minita = Personaje("feminismo",20,0,12,100)
+combate(minita,Moises)
+"""
 
 
 """
