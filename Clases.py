@@ -33,6 +33,8 @@ class Personaje:
             return 0  # Devuelve 0 para indicar que no se hizo daño
         elif oponente.defensa < self.fuerza:
             return self.fuerza - oponente.defensa
+        else:
+            return 0 #Return 0 if the defense is equal to the attacket's strength
 
 
     def atacar(self,oponente):
