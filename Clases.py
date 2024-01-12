@@ -37,6 +37,7 @@ class Personaje:
 
     def atacar(self,oponente):
         daño = self.daño(oponente)
+        print("--", oponente.atributos())
         oponente.vida = oponente.vida - daño
         print(">>>", self.nombre, " Ataco y ha hecho ", daño, " Puntos de daño a ", oponente.nombre)
         if oponente.vivo():
@@ -45,7 +46,7 @@ class Personaje:
             oponente.morir()
 
 
-class Admin(Personaje):
+class Tirador(Personaje):
     def __init__(self, nombre, fuerza, fe, defensa, vida, arma_de_fuego):
         super().__init__(nombre, fuerza, fe, defensa, vida)
         self.arma_de_fuego = arma_de_fuego
@@ -87,6 +88,8 @@ class Admin(Personaje):
         return self.fuerza + self.arma_de_fuego
 
 
+class Guerrero(Personaje):
+    pass
 
 def combate(player_1,player_2):
     turno = 1
@@ -110,7 +113,7 @@ def combate(player_1,player_2):
         print("\nEmpate")
 
 
-Akari = Admin("Akari",8,0,10,100,0)
+Akari = Tirador("Akari",8,0,10,100,0)
 sebas_low_elo = Personaje("Sebas",30,1,30,100)
 
 combate(Akari,sebas_low_elo)
