@@ -1,4 +1,5 @@
 import random
+from typing import Any
 
 class Personaje:
     def __init__(self, nombre, fuerza, fe, defensa, vida): #atri
@@ -89,6 +90,10 @@ class Tirador(Personaje):
 
 
 class Guerrero(Personaje):
+    def __init__(self, nombre, fuerza, fe, defensa, vida):
+        super().__init__(nombre, fuerza, fe, defensa, vida)
+
+        
     pass
 
 def combate(player_1,player_2):
