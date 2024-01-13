@@ -1,33 +1,40 @@
 import random
 from typing import Any
 
+def mostrar_menu_acciones():
+    print("Acciones disponibles:")
+    print("  1. Atacar")
+    print("  2. Subir de nivel")
+    print("  3. Mostrar atributos")
+    print("  4. Cambiar arma")
+    
 class Personaje:
-    def __init__(self, nombre, fuerza, fe, defensa, vida): #atri
+    def __init__(self, nombre, fuerza, fe, defensa, vida):
         self.nombre = nombre
-        self.fuerza = fuerza 
+        self.fuerza = fuerza
         self.fe = fe
         self.defensa = defensa
         self.vida = vida
-    
-    def atributos(self): #metodos
-        print(self.nombre, ":", sep="")
-        print("-Fuerza :", self.fuerza)
-        print("-fe :", self.fe)
-        print("-Defensa :", self.defensa)
-        print("-vida :", self.vida)
 
-    def subir_de_nivel(self,fuerza,fe,defensa):
-        self.fuerza = self.fuerza + fuerza
-        self.fe = self.fe + fe
-        self.defensa = self.defensa + defensa
+    def atributos(self):
+        print(f"{self.nombre}:")
+        print(f"  - Fuerza   : {self.fuerza}")
+        print(f"  - Fe       : {self.fe}")
+        print(f"  - Defensa  : {self.defensa}")
+        print(f"  - Vida     : {self.vida}\n")
+
+    def subir_de_nivel(self, fuerza, fe, defensa):
+        self.fuerza += fuerza
+        self.fe += fe
+        self.defensa += defensa
 
     def vivo(self):
         return self.vida > 0
-    
-    def morir (self):
+
+    def morir(self):
         self.vida = 0
-        print(">>> ",self.nombre, " Se fue con diocito")
-    
+        print(f">>> {self.nombre} Se fue con diocito\n")
+
     def daño(self, oponente):
         if oponente.defensa > self.fuerza:
             print(">>> No hiciste daño")
@@ -35,48 +42,38 @@ class Personaje:
         elif oponente.defensa < self.fuerza:
             return self.fuerza - oponente.defensa
 
-
-    def atacar(self,oponente):
+    def atacar(self, oponente):
         daño = self.daño(oponente)
-        print("--", oponente.atributos())
         oponente.vida = oponente.vida - daño
-        print(">>>", self.nombre, " Ataco y ha hecho ", daño, " Puntos de daño a ", oponente.nombre)
+        print(f">>> {self.nombre} Atacó y ha hecho {daño} puntos de daño a {oponente.nombre}")
         if oponente.vivo():
-            print(">>> la vida de", oponente.nombre, "es", oponente.vida)
+            print(f">>> La vida de {oponente.nombre} es {oponente.vida}\n")
         else:
             oponente.morir()
 
+    def elegir_accion(self):
+        print("\n>>> Acción de", self.nombre + ":")
+        mostrar_menu_acciones()
+        accion = input("Elige una acción (1/2/3): ")
+        return accion
+
+    def realizar_accion(self, accion, oponente):
+        if accion == "1":
+            self.atacar(oponente)
+        elif accion == "2":
+            self.subir_de_nivel(random.randint(1, 5), random.randint(1, 5), random.randint(1, 5))
+        elif accion == "3":
+            self.atributos()
 
 class Tirador(Personaje):
     def __init__(self, nombre, fuerza, fe, defensa, vida, arma_de_fuego):
         super().__init__(nombre, fuerza, fe, defensa, vida)
         self.arma_de_fuego = arma_de_fuego
-        self.arma_de_fuego = random.randint(10,30)*2
-    """
-    def cambiar_arma(self):
-        opcion = int(input("Elije un arma: (1) Espada 8 de daño (2) pistolas duales ? de daño"))
-        if opcion == 1:
-            self.arma_de_fuego = 8
-        elif opcion == 2:
-            self.arma_de_fuego = random.randint(10,30)
-        else:
-            print("Numero incorrecto")
-    """
 
     def atributos(self):
         super().atributos()
-        print("-Arma", self.arma_de_fuego)
-    pass
+        print(f"  - Arma     : {self.arma_de_fuego}\n")
 
-    """                    
-    def daño(self,oponente):
-        ataque_total = self.daño + self.arma_de_fuego
-        if  ataque_total < oponente.defensa:
-            print(">>> No hiciste daño")
-            return 0  # Devuelve 0 para indicar que no se hizo daño    
-        elif ataque_total > oponente.defensa:
-            return ataque_total - oponente.defensa
-    """
     def daño(self, oponente):
         ataque_total = self.calcular_ataque_total(oponente)
         if ataque_total < oponente.defensa:
@@ -88,40 +85,57 @@ class Tirador(Personaje):
     def calcular_ataque_total(self, oponente):
         return self.fuerza + self.arma_de_fuego
 
+    def elegir_accion(self):
+        accion = super().elegir_accion()
+        return accion
+
+    def realizar_accion(self, accion, oponente):
+        if accion == "4":
+            self.cambiar_arma()
+        else:
+            super().realizar_accion(accion, oponente)
+
+    def cambiar_arma(self):
+        self.arma_de_fuego = random.randint(10, 30) * 2
+        print(f">>> Has cambiado tu arma. Nuevo daño: {self.arma_de_fuego}\n")
+
 
 class Guerrero(Personaje):
-    def __init__(self, nombre, fuerza, fe, defensa, vida):
+    def __init__(self, nombre, fuerza, fe, defensa, vida,espada):
         super().__init__(nombre, fuerza, fe, defensa, vida)
+        self.espada = espada
 
-        
+
     pass
 
-def combate(player_1,player_2):
+def combate_interactivo(player_1, player_2):
     turno = 1
     while player_1.vivo() and player_2.vivo():
-        print("\n>>> Turno", turno)
+        print(f"\n>>> Turno {turno}")
 
-        print(">>> acción de ", player_1.nombre, ":", sep="")
-        player_1.atacar(player_2)
-        
-        #print(player_1.atributos())
+        print(f">>> Acción de {player_1.nombre}:")
+        accion_1 = player_1.elegir_accion()
+        player_1.realizar_accion(accion_1, player_2)
 
-        print(">>> Acción de ", player_2.nombre, ":", sep="")
-        player_2.atacar(player_1)
+        print(f">>> Acción de {player_2.nombre}:")
+        accion_2 = player_2.elegir_accion()
+        player_2.realizar_accion(accion_2, player_1)
 
-        turno = turno + 1
+        turno += 1
+
     if player_1.vivo():
-        print("\nHa ganado", player_1.nombre)
+        print(f"\nHa ganado {player_1.nombre}\n")
     elif player_2.vivo():
-        print("\nHa ganado", player_2.nombre)
+        print(f"\nHa ganado {player_2.nombre}\n")
     else:
-        print("\nEmpate")
+        print("\nEmpate\n")
 
+# Crear instancias de las clases
+Akari = Tirador("Akari", 8, 0, 10, 100, 0)
+sebas_low_elo = Personaje("Sebas", 30, 1, 30, 100)
 
-Akari = Tirador("Akari",8,0,10,100,0)
-sebas_low_elo = Personaje("Sebas",30,1,30,100)
-
-combate(Akari,sebas_low_elo)
+# Iniciar combate interactivo
+combate_interactivo(Akari, sebas_low_elo)
 
 """
 print("\nEstadisticas iniciales")
