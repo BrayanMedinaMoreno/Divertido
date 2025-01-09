@@ -104,8 +104,6 @@ class Guerrero(Personaje):
     def __init__(self, nombre, fuerza, fe, defensa, vida,espada):
         super().__init__(nombre, fuerza, fe, defensa, vida)
         self.espada = espada
-
-
     pass
 
 def combate_interactivo(player_1, player_2):
